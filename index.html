@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TMGM · Account Opening Flow</title>
+<meta name="description" content="Interactive bilingual (English / Arabic) guide: how to open a TMGM live account in 5 stages and 11 steps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Lexend:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0b1f6b; --navy-2:#0a1750; --blue:#1d4ed8; --blue-soft:#e8eefc;
+  --orange:#ff7a1a; --orange-soft:#fff1e6; --green:#12a36b; --green-soft:#e3f6ee;
+  --bg:#f4f7ff; --card:#ffffff; --ink:#0d1b4c; --muted:#5b6692; --line:#dde4f5;
+  --radius:18px; --shadow:0 10px 30px rgba(11,31,107,.08);
+  --font-en:'IBM Plex Sans',system-ui,sans-serif; --font-head:'Lexend','IBM Plex Sans Arabic',sans-serif;
+}
+:root[data-theme="dark"]{
+  --bg:#070d2b; --card:#101a4a; --ink:#eef2ff; --muted:#a4b0e0; --line:#243273;
+  --blue-soft:#16246b; --orange-soft:#3a2312; --green-soft:#0f3a2c; --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-en);line-height:1.6;-webkit-font-smoothing:antialiased}
+[dir="rtl"] body, [dir="rtl"]{font-family:'IBM Plex Sans Arabic','IBM Plex Sans',sans-serif}
+h1,h2,h3{font-family:var(--font-head);line-height:1.25}
+[dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3{font-family:'IBM Plex Sans Arabic',var(--font-head);font-weight:700}
+a{color:inherit}
+button{font:inherit;cursor:pointer;color:inherit}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1200px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px}
+.brand{font-family:var(--font-head);font-weight:700;letter-spacing:.04em;display:flex;flex-direction:column;line-height:1.1}
+.brand small{font-size:9px;letter-spacing:.28em;color:var(--muted);font-weight:500}
+.spacer{flex:1}
+.seg{display:inline-flex;background:var(--blue-soft);border-radius:999px;padding:4px;gap:2px}
+.seg button{border:0;background:transparent;padding:6px 16px;border-radius:999px;font-weight:600;font-size:14px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff;box-shadow:0 4px 12px rgba(11,31,107,.3)}
+:root[data-theme="dark"] .seg button[aria-pressed="true"]{background:var(--blue)}
+.icon-btn{border:1px solid var(--line);background:var(--card);width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:16px}
+.progress-mini{height:3px;background:var(--line)}
+.progress-mini i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--orange));transition:width .3s}
+
+/* hero */
+.hero{background:linear-gradient(135deg,var(--navy-2),var(--navy) 55%,#1646c9);color:#fff;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:44px 44px}
+.hero-in{position:relative;max-width:1200px;margin:0 auto;padding:56px 20px 64px;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(32px,5vw,56px);margin-bottom:14px}
+.hero p.lead{font-size:18px;color:#c9d4ff;max-width:46ch;margin-bottom:22px}
+.pills{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+.pill{border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 16px;font-size:14px;color:#e6ecff}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 24px;font-weight:600;background:var(--orange);color:#fff;text-decoration:none;box-shadow:0 8px 20px rgba(255,122,26,.35);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);box-shadow:none}
+.hero-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:var(--radius);padding:22px;backdrop-filter:blur(4px)}
+.hero-card h3{font-size:15px;margin-bottom:12px;color:#ffd7b8;font-weight:600}
+.ready{list-style:none;display:grid;gap:10px}
+.ready li{display:flex;gap:10px;align-items:center;font-size:15px}
+.ready li::before{content:"✓";color:#5eead4;font-weight:700}
+
+/* layout */
+.wrap{max-width:1200px;margin:0 auto;padding:36px 20px 80px;display:grid;grid-template-columns:270px 1fr;gap:36px}
+.rail{position:sticky;top:84px;align-self:start;max-height:calc(100vh - 110px);overflow:auto;padding-inline-end:4px}
+.rail h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+[dir="rtl"] .rail h4{letter-spacing:0}
+.stage-group{margin-bottom:14px}
+.stage-label{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;margin-bottom:4px}
+.stage-label b{width:22px;height:22px;border-radius:50%;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;font-size:12px}
+.rail a.step-link{display:flex;gap:10px;align-items:center;padding:7px 10px;border-radius:10px;text-decoration:none;font-size:14px;color:var(--muted);border-inline-start:3px solid transparent}
+.rail a.step-link:hover{background:var(--blue-soft)}
+.rail a.step-link.active{background:var(--blue-soft);color:var(--ink);border-inline-start-color:var(--orange);font-weight:600}
+.rail a.step-link.done .num{background:var(--green);color:#fff}
+.num{min-width:22px;height:22px;border-radius:7px;background:var(--line);display:grid;place-items:center;font-size:12px;font-weight:600}
+
+/* overview */
+.stages{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:40px}
+.stage-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);text-decoration:none;display:block;transition:transform .15s,border-color .15s}
+.stage-card:hover{transform:translateY(-3px);border-color:var(--blue)}
+.stage-card .n{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:700;margin-bottom:10px}
+.stage-card h3{font-size:15px;margin-bottom:4px}
+.stage-card p{font-size:13px;color:var(--muted)}
+.stage-card .rng{display:inline-block;margin-top:8px;font-size:12px;color:var(--orange);font-weight:600}
+
+.stage-head{display:flex;align-items:center;gap:12px;margin:48px 0 18px}
+.stage-head .n{width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700}
+.stage-head h2{font-size:22px}
+.stage-head .line{flex:1;height:1px;background:var(--line)}
+
+/* step card */
+.step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin-bottom:22px;scroll-margin-top:90px;transition:border-color .2s,box-shadow .2s}
+.step:target,.step.focus{border-color:var(--orange);box-shadow:0 0 0 4px rgba(255,122,26,.18),var(--shadow)}
+.step-top{display:flex;gap:14px;align-items:center;margin-bottom:18px}
+.badge{background:var(--navy);color:#fff;border-radius:14px;padding:6px 14px;text-align:center;line-height:1.1;min-width:58px}
+.badge small{display:block;font-size:10px;opacity:.75;letter-spacing:.08em;text-transform:uppercase}
+.badge b{font-size:24px;font-family:var(--font-head)}
+.step-top h3{font-size:21px;flex:1}
+.done-btn{border:1px solid var(--line);background:transparent;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:var(--muted);display:flex;gap:6px;align-items:center}
+.done-btn[aria-pressed="true"]{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+.step-body{display:grid;grid-template-columns:1fr 1.15fr;gap:26px;align-items:start}
+.points{list-style:none;display:grid;gap:12px;counter-reset:p}
+.points li{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:12px;border:1px solid transparent;cursor:default;transition:background .15s,border-color .15s}
+.points li:hover,.points li.hl{background:var(--orange-soft);border-color:#ffd2ad}
+.dot{min-width:26px;height:26px;border-radius:50%;background:var(--orange);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;margin-top:1px}
+.note{margin-top:16px;border-radius:12px;padding:12px 16px;font-size:14.5px;border-inline-start:4px solid var(--blue);background:var(--blue-soft)}
+.note.tip{border-color:var(--green);background:var(--green-soft)}
+.note.warn{border-color:var(--orange);background:var(--orange-soft)}
+.note b{display:block;margin-bottom:2px}
+
+/* mock browser */
+.mock{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;color:#0d1b4c;direction:ltr;text-align:left;font-family:'IBM Plex Sans',sans-serif;box-shadow:0 6px 20px rgba(11,31,107,.1)}
+.mock-bar{background:#eef2fb;padding:8px 12px;display:flex;gap:10px;align-items:center}
+.mock-bar i{width:9px;height:9px;border-radius:50%;background:#c9d2ea;display:inline-block;margin-right:3px}
+.mock-bar span{background:#fff;border-radius:6px;padding:2px 14px;font-size:11px;color:#5b6692}
+.mock-body{padding:18px;position:relative;font-size:12px}
+.mock h5{font-size:15px;text-align:center;margin-bottom:12px;font-family:'Lexend',sans-serif}
+.fld{border:1px solid #dde4f5;border-radius:6px;padding:8px 10px;color:#5b6692;font-size:11.5px;background:#fff}
+.fld.filled{background:#eef0f4;filter:blur(0);color:transparent;position:relative}
+.fld.filled::after{content:"";position:absolute;left:10px;top:50%;width:46%;height:8px;border-radius:4px;background:#cfd5e3;transform:translateY(-50%)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.cta{background:linear-gradient(90deg,#0b1f6b,#1d6ae8);color:#fff;border-radius:999px;text-align:center;padding:9px;font-weight:600;font-size:12px;margin-top:10px}
+.cta.orange{background:var(--orange)}
+.cta.light{background:#7aa2ff}
+.hs{position:relative;outline:2px solid var(--orange);outline-offset:3px;border-radius:8px;transition:box-shadow .15s,outline-width .15s}
+.hs.hl{box-shadow:0 0 0 6px rgba(255,122,26,.3);outline-width:3px}
+.hs>.tag{position:absolute;top:-11px;inset-inline-end:-8px;inset-inline-end:auto;right:-8px;background:var(--orange);color:#fff;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;z-index:2}
+.banner{background:#ffe3cc;color:#c2560a;padding:7px 12px;font-size:11px;display:flex;justify-content:space-between;align-items:center;margin:-18px -18px 14px}
+.banner .ob{background:var(--orange);color:#fff;border-radius:999px;padding:3px 12px;font-weight:600}
+.trackbar{display:flex;justify-content:space-between;font-size:10px;color:#5b6692;margin:14px 0;position:relative}
+.trackbar span{position:relative;padding-top:14px;text-align:center;flex:1}
+.trackbar span::before{content:"";position:absolute;top:0;left:50%;width:9px;height:9px;border-radius:50%;background:#cfd8ee;transform:translateX(-50%)}
+.trackbar span.on::before{background:var(--blue)}
+.trackbar span.on{color:var(--blue);font-weight:600}
+.opt{display:flex;justify-content:space-between;border:1px solid #dde4f5;border-radius:6px;padding:8px 10px;margin-bottom:6px;font-size:11.5px}
+.opt::after{content:"";width:12px;height:12px;border-radius:50%;border:1.5px solid #9aa6cf}
+.opt.sel{border-color:#1d6ae8;color:#1d6ae8;background:#f0f5ff}
+.opt.sel::after{background:#1d6ae8;border-color:#1d6ae8;box-shadow:inset 0 0 0 2px #fff}
+.upl{display:flex;gap:10px;align-items:center;border:1px solid #dde4f5;border-radius:8px;padding:8px;margin-bottom:6px}
+.upl i{width:34px;height:34px;border-radius:6px;background:linear-gradient(135deg,#d6d0c8,#b9b0a2);display:block}
+.upl em{font-style:normal;font-size:10px;color:#12a36b;display:block}
+.chk{display:flex;gap:6px;align-items:center;font-size:10.5px;margin:3px 0;color:#12a36b}
+.chk.bad{color:#d33}
+.face{width:74px;height:74px;border-radius:50%;margin:4px auto 8px;border:3px dotted #7aa2ff;display:grid;place-items:center;font-size:34px;background:#eaf1ff}
+.congrats{text-align:center;padding:10px 0}
+.congrats .gem{font-size:46px}
+.row{display:flex;gap:8px}
+.row>*{flex:1}
+.btn-o{border:1px solid #1d6ae8;color:#1d6ae8;border-radius:6px;padding:8px;text-align:center;font-weight:600;font-size:11.5px}
+.btn-f{background:#1d6ae8;color:#fff;border-radius:6px;padding:8px;text-align:center;font-weight:600;font-size:11.5px}
+.summary{position:absolute;top:18px;right:14px;width:130px;border:1px solid #dde4f5;border-radius:8px;padding:8px;background:#f8faff;font-size:10px}
+.summary div{display:flex;justify-content:space-between;margin-top:3px}
+.summary b{color:#0b1f6b}
+.stack{display:grid;gap:8px;margin-right:150px}
+
+/* tips + final */
+.tips{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:6px}
+.tip-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.tip-card .n{width:30px;height:30px;border-radius:50%;background:var(--orange);color:#fff;display:grid;place-items:center;font-weight:700;margin-bottom:10px}
+.tip-card h3{font-size:16px;margin-bottom:4px}
+.tip-card p{font-size:14px;color:var(--muted)}
+.safe{margin-top:16px;background:var(--orange-soft);border-inline-start:4px solid var(--orange);border-radius:12px;padding:14px 18px;font-size:14.5px}
+.final{margin-top:48px;background:linear-gradient(135deg,var(--navy-2),var(--blue));color:#fff;border-radius:24px;padding:36px;position:relative;overflow:hidden}
+.final h2{font-size:clamp(24px,3.4vw,36px);margin-bottom:8px}
+.final p{color:#c9d4ff;margin-bottom:20px}
+.final .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.final .box{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:16px}
+.final .box small{color:#ffc79e;font-weight:600}
+.final .box h4{font-size:17px;margin:2px 0}
+.final .box p{font-size:14px;margin:0;color:#d5defc}
+.risk{margin-top:20px;font-size:12px;color:#aebcf0}
+footer{max-width:1200px;margin:0 auto;padding:0 20px 40px;color:var(--muted);font-size:13px;text-align:center}
+
+@media (max-width:1000px){
+  .wrap{grid-template-columns:1fr}
+  .rail{display:none}
+  .hero-in{grid-template-columns:1fr}
+  .stages{grid-template-columns:repeat(2,1fr)}
+  .step-body{grid-template-columns:1fr}
+  .tips{grid-template-columns:repeat(2,1fr)}
+}
+.wrap>main,.step-body>*{min-width:0}
+html,body{overflow-x:hidden}
+@media (max-width:560px){
+  .mockwrap .row{flex-direction:column}
+  .stages{grid-template-columns:1fr}
+  .tips,.final .two{grid-template-columns:1fr}
+  .step{padding:18px}
+  .step-top{flex-wrap:wrap}
+  .stack{margin-right:0}
+  .summary{position:static;width:auto;margin-bottom:10px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{.topbar,.rail,.done-btn{display:none}.wrap{display:block}.step{break-inside:avoid;box-shadow:none}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">TMGM<small>TRADE THE WORLD</small></div>
+    <div class="spacer"></div>
+    <div class="seg" role="group" aria-label="Language">
+      <button id="btn-en" aria-pressed="true" data-lang="en">EN</button>
+      <button id="btn-ar" aria-pressed="false" data-lang="ar">عربي</button>
+    </div>
+    <button class="icon-btn" id="theme" aria-label="Toggle theme">◐</button>
+  </div>
+  <div class="progress-mini"><i id="bar"></i></div>
+</header>
+
+<section class="hero">
+  <div class="hero-in">
+    <div>
+      <h1 data-t="hero_title"></h1>
+      <p class="lead" data-t="hero_sub"></p>
+      <div class="pills">
+        <span class="pill" data-t="pill1"></span>
+        <span class="pill" data-t="pill2"></span>
+        <span class="pill" data-t="pill3"></span>
+      </div>
+      <a class="btn" href="#step-1" data-t="start"></a>
+    </div>
+    <div class="hero-card">
+      <h3 data-t="ready_title"></h3>
+      <ul class="ready" id="ready"></ul>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <aside class="rail" id="rail" aria-label="Steps"></aside>
+  <main>
+    <h2 style="font-size:24px;margin-bottom:6px" data-t="journey"></h2>
+    <p style="color:var(--muted);margin-bottom:18px" data-t="journey_sub"></p>
+    <div class="stages" id="stages"></div>
+
+    <div id="flow"></div>
+
+    <div class="stage-head"><div class="n">!</div><h2 data-t="tips_title"></h2><div class="line"></div></div>
+    <p style="color:var(--muted);margin-bottom:14px" data-t="tips_sub"></p>
+    <div class="tips" id="tips"></div>
+    <div class="safe" data-t="safe" id="safe"></div>
+
+    <section class="final">
+      <h2 data-t="final_title"></h2>
+      <p data-t="final_sub"></p>
+      <div class="two">
+        <div class="box"><small data-t="next_guide"></small><h4 data-t="deposit_title"></h4><p data-t="deposit_sub"></p></div>
+        <div class="box"><small data-t="need_help"></small><h4 data-t="chat_title"></h4><p data-t="chat_sub"></p></div>
+      </div>
+      <p class="risk" data-t="risk"></p>
+    </section>
+  </main>
+</div>
+<footer data-t="footer"></footer>
+
+<script>
+/* ---------- CONTENT (EN master + Arabic MSA) ---------- */
+const T = {
+ en:{
+  hero_title:"How to Open Your TMGM Account",
+  hero_sub:"A step-by-step visual guide, from sign-up to an approved live account.",
+  pill1:"5 stages", pill2:"11 steps", pill3:"Interactive guide", start:"Start the guide ↓",
+  ready_title:"Have these ready",
+  ready:["Email and phone number","Valid ID card or passport","Phone or computer camera","Your current home address"],
+  journey:"Your journey in 5 stages",
+  journey_sub:"The same stages appear in the progress bar inside the Client Portal. Click a stage to jump to it.",
+  step:"Step", stepsWord:"Steps", stepWord:"Step", mark:"Mark as done", marked:"Done",
+  tips_title:"Tips to avoid delays",
+  tips_sub:"Most delays come from mismatched details or an unclear photo.",
+  tips:[["Match your ID","Type your name in Latin letters exactly as it appears on your document."],["Clear, full photo","Capture the whole document in good light, with no glare or cut-off edges."],["Selfie right first time","Remove glasses and hat, and keep your face centred in the frame."],["Watch your inbox","Check your spam folder if TMGM emails don't arrive."]],
+  safe:"<b>Stay safe:</b> never share your password or verification code, and only use the official TMGM website.",
+  final_title:"Your account is ready. Next step: your first deposit.",
+  final_sub:"Once approved, fund your account from Funding, then Deposit, in the Client Portal.",
+  next_guide:"Next guide", deposit_title:"How to make a deposit", deposit_sub:"Payment methods, deposit steps and tracking.",
+  need_help:"Need help?", chat_title:"Live chat in the portal", chat_sub:"Click the “Hi. Need any help?” chat button at the bottom of the page.",
+  risk:"Trading CFDs carries a high level of risk due to leverage and may not be suitable for all investors. Products and terms vary by country and legal entity. Screens are illustrative and based on the TMGM Client Portal (September 2026).",
+  footer:"TMGM · Account Opening Guide",
+  stagesList:[
+   ["Personal Info","Create your account and enter the Client Portal."],
+   ["Verification","Upload your ID and take a quick selfie."],
+   ["Additional Info","Add your residential address."],
+   ["Account Configuration","Choose platform, account type and password."],
+   ["Questionnaire","Answer a few financial questions, and you're done."]],
+  note:{info:"Good to know",tip:"Tip",warn:"Important"}
+ },
+ ar:{
+  hero_title:"كيف تفتح حسابك لدى TMGM",
+  hero_sub:"دليل مرئي خطوة بخطوة، من التسجيل حتى الحصول على حساب حقيقي معتمد.",
+  pill1:"٥ مراحل", pill2:"١١ خطوة", pill3:"دليل تفاعلي", start:"ابدأ الدليل ↓",
+  ready_title:"جهّز ما يلي",
+  ready:["بريدك الإلكتروني ورقم هاتفك","بطاقة هوية سارية أو جواز سفر","كاميرا الهاتف أو الحاسوب","عنوان سكنك الحالي"],
+  journey:"رحلتك في ٥ مراحل",
+  journey_sub:"تظهر المراحل نفسها في شريط التقدّم داخل بوابة العملاء. اضغط على أي مرحلة للانتقال إليها.",
+  step:"الخطوة", stepsWord:"الخطوات", stepWord:"الخطوة", mark:"تم إنجازها", marked:"تمّت",
+  tips_title:"نصائح لتجنّب التأخير",
+  tips_sub:"يرجع معظم التأخير إلى عدم تطابق البيانات أو عدم وضوح الصورة.",
+  tips:[["طابِق بيانات هويتك","اكتب اسمك بالأحرف اللاتينية تماماً كما يظهر في وثيقتك."],["صورة واضحة وكاملة","صوّر الوثيقة كاملة في إضاءة جيدة، دون انعكاسات أو حواف مقطوعة."],["سيلفي صحيح من أول مرة","اخلع النظارة والقبعة، وأبقِ وجهك في منتصف الإطار."],["تابع بريدك الإلكتروني","تحقّق من مجلد الرسائل غير المرغوب فيها إن لم تصلك رسائل TMGM."]],
+  safe:"<b>حافظ على أمانك:</b> لا تشارك كلمة المرور أو رمز التحقق مع أحد، واستخدم موقع TMGM الرسمي فقط.",
+  final_title:"حسابك جاهز. الخطوة التالية: إيداعك الأول.",
+  final_sub:"بعد اعتماد الحساب، موّله من «التمويل» ثم «الإيداع» في بوابة العملاء.",
+  next_guide:"الدليل التالي", deposit_title:"كيف تجري إيداعاً", deposit_sub:"وسائل الدفع وخطوات الإيداع والمتابعة.",
+  need_help:"تحتاج إلى مساعدة؟", chat_title:"الدردشة المباشرة في البوابة", chat_sub:"اضغط على زر الدردشة «Hi. Need any help?» أسفل الصفحة.",
+  risk:"ينطوي تداول عقود الفروقات على مستوى مرتفع من المخاطر بسبب الرافعة المالية، وقد لا يناسب جميع المستثمرين. تختلف المنتجات والشروط بحسب البلد والكيان القانوني. الشاشات توضيحية ومبنية على بوابة عملاء TMGM (سبتمبر ٢٠٢٦).",
+  footer:"TMGM · دليل فتح الحساب",
+  stagesList:[
+   ["المعلومات الشخصية","أنشئ حسابك وادخل إلى بوابة العملاء."],
+   ["التحقق","ارفع هويتك والتقط صورة سيلفي سريعة."],
+   ["معلومات إضافية","أضف عنوان إقامتك."],
+   ["إعداد الحساب","اختر المنصة ونوع الحساب وكلمة المرور."],
+   ["الاستبيان","أجب عن بعض الأسئلة المالية، وبذلك تكون قد انتهيت."]],
+  note:{info:"معلومة مفيدة",tip:"نصيحة",warn:"مهم"}
+ }
+};
+
+/* stage: 0-4. mock: key into MOCKS. pts: numbered callouts matching hotspots */
+const STEPS=[
+ {id:1,stage:0,mock:"home",
+  t:{en:"Go to tmgm.com and click Sign Up",ar:"ادخل إلى tmgm.com واضغط «Sign Up»"},
+  pts:[{en:"Click “Sign Up” at the top, or “Start Trading Now”.",ar:"اضغط «Sign Up» في الأعلى، أو «Start Trading Now»."},
+       {en:"Use the flag icon to change the site language.",ar:"استخدم أيقونة العلم لتغيير لغة الموقع."}]},
+ {id:2,stage:0,mock:"signup",
+  t:{en:"Fill in the sign-up form",ar:"املأ نموذج التسجيل"},
+  pts:[{en:"Enter your first and last name exactly as on your ID, then your email, password, country and phone number.",ar:"أدخل اسمك الأول واسم العائلة تماماً كما في هويتك، ثم بريدك الإلكتروني وكلمة المرور والدولة ورقم الهاتف."},
+       {en:"Click “Get Started Now”.",ar:"اضغط «Get Started Now»."}],
+  note:{k:"info",en:"<b>The referral code is optional.</b> Only enter one if a partner or friend gave it to you.",ar:"<b>رمز الإحالة اختياري.</b> أدخله فقط إذا زوّدك به شريك أو صديق."}},
+ {id:3,stage:0,mock:"portal",
+  t:{en:"Start your live account in the portal",ar:"ابدأ حسابك الحقيقي في البوابة"},
+  pts:[{en:"After sign-up the Client Portal opens. Click “Verify Now” or “Open Now”.",ar:"بعد التسجيل تُفتح بوابة العملاء. اضغط «Verify Now» أو «Open Now»."},
+       {en:"Track your progress in the bar: stage 1 is done, 4 to go.",ar:"تابع تقدّمك في الشريط: المرحلة ١ اكتملت وبقيت ٤ مراحل."}]},
+ {id:4,stage:1,mock:"verify",
+  t:{en:"Start identity verification",ar:"ابدأ التحقق من الهوية"},
+  pts:[{en:"Click “Start verification”.",ar:"اضغط «Start verification»."},
+       {en:"Read the notice and click “Agree and continue”.",ar:"اقرأ الإشعار ثم اضغط «Agree and continue»."}],
+  note:{k:"info",en:"<b>Only two checks:</b> a photo of your ID, then a selfie.",ar:"<b>فحصان فقط:</b> صورة لهويتك، ثم صورة سيلفي."}},
+ {id:5,stage:1,mock:"upload",
+  t:{en:"Choose your document and upload it",ar:"اختر وثيقتك وارفعها"},
+  pts:[{en:"Select the issuing country and document type, then “Continue”.",ar:"اختر بلد الإصدار ونوع الوثيقة، ثم اضغط «Continue»."},
+       {en:"Upload the front and back, then “Continue”.",ar:"ارفع الوجه الأمامي والخلفي، ثم اضغط «Continue»."}],
+  note:{k:"warn",en:"<b>The photo must be clear and complete.</b> Accepted: JPG, PNG, HEIC or WEBP up to 50 MB. The check usually takes about 60 seconds.",ar:"<b>يجب أن تكون الصورة واضحة وكاملة.</b> الصيغ المقبولة: JPG وPNG وHEIC وWEBP بحجم يصل إلى ٥٠ ميغابايت. يستغرق الفحص عادةً نحو ٦٠ ثانية."}},
+ {id:6,stage:1,mock:"selfie",
+  t:{en:"Face check (selfie)",ar:"فحص الوجه (سيلفي)"},
+  pts:[{en:"Once your ID shows “Accepted”, click “Start verification”.",ar:"عندما تظهر حالة هويتك «Accepted»، اضغط «Start verification»."},
+       {en:"Get your camera ready and click “Continue”.",ar:"جهّز الكاميرا ثم اضغط «Continue»."}],
+  note:{k:"tip",en:"<b>Tip:</b> good lighting, face inside the frame, no hat, glasses or mask. No webcam? Choose “Continue on phone”.",ar:"<b>نصيحة:</b> إضاءة جيدة، ووجهك داخل الإطار، دون قبعة أو نظارة أو كمامة. لا تملك كاميرا ويب؟ اختر «Continue on phone»."}},
+ {id:7,stage:2,mock:"address",
+  t:{en:"Add your home address",ar:"أضف عنوان إقامتك"},
+  pts:[{en:"Your date of birth is filled in from your ID. Enter your address, city and state.",ar:"يُعبّأ تاريخ ميلادك تلقائياً من هويتك. أدخل عنوانك والمدينة والمحافظة/الولاية."},
+       {en:"Click “NEXT”.",ar:"اضغط «NEXT»."}],
+  note:{k:"warn",en:"<b>Use your real home address</b>, not a PO box. The postcode is optional.",ar:"<b>استخدم عنوان سكنك الفعلي</b> وليس صندوق بريد. الرمز البريدي اختياري."}},
+ {id:8,stage:3,mock:"config",
+  t:{en:"Choose your trading account settings",ar:"اختر إعدادات حساب التداول"},
+  pts:[{en:"Platform: MT5 or MT4.",ar:"المنصة: MT5 أو MT4."},
+       {en:"Account type: Edge or Classic.",ar:"نوع الحساب: Edge أو Classic."},
+       {en:"Account currency and leverage.",ar:"عملة الحساب والرافعة المالية."},
+       {en:"Review your choices in “Summary”.",ar:"راجع اختياراتك في «Summary»."}]},
+ {id:9,stage:3,mock:"password",
+  t:{en:"Set your password and accept the terms",ar:"عيّن كلمة المرور ووافق على الشروط"},
+  pts:[{en:"Create a password of 8 to 15 characters with an uppercase letter, a lowercase letter, a number and a special character.",ar:"أنشئ كلمة مرور من ٨ إلى ١٥ حرفاً تتضمن حرفاً كبيراً وحرفاً صغيراً ورقماً ورمزاً خاصاً."},
+       {en:"Read the documents, then tick the consent box.",ar:"اقرأ المستندات ثم ضع علامة في خانة الموافقة."},
+       {en:"Click “NEXT”.",ar:"اضغط «NEXT»."}],
+  note:{k:"warn",en:"<b>One password for both:</b> it works for the Client Portal and your trading account. Keep it safe and never share it.",ar:"<b>كلمة مرور واحدة للاثنين:</b> تعمل لبوابة العملاء ولحساب التداول معاً. احفظها جيداً ولا تشاركها مع أحد."}},
+ {id:10,stage:4,mock:"quest",
+  t:{en:"Answer the financial questionnaire",ar:"أجب عن الاستبيان المالي"},
+  pts:[{en:"Select your employment status.",ar:"اختر وضعك الوظيفي."},
+       {en:"Choose your income, savings and industry, then “SUBMIT”.",ar:"اختر دخلك ومدخراتك وقطاع عملك، ثم اضغط «SUBMIT»."}],
+  note:{k:"info",en:"<b>Answer accurately.</b> These questions are a required part of account opening.",ar:"<b>أجب بدقة.</b> هذه الأسئلة جزء إلزامي من إجراءات فتح الحساب."}},
+ {id:11,stage:4,mock:"done",
+  t:{en:"Congratulations, you're verified!",ar:"تهانينا، تم التحقق من حسابك!"},
+  pts:[{en:"Click “Go to Deposit” to make your first deposit.",ar:"اضغط «Go to Deposit» لإجراء إيداعك الأول."},
+       {en:"Or “Go to Dashboard” to return to the portal home.",ar:"أو اضغط «Go to Dashboard» للعودة إلى الصفحة الرئيسية للبوابة."}],
+  note:{k:"tip",en:"<b>Add notifications@tmgm.com to your contacts</b> so TMGM emails don't land in spam.",ar:"<b>أضف notifications@tmgm.com إلى جهات اتصالك</b> حتى لا تصل رسائل TMGM إلى البريد غير المرغوب فيه."}}
+];
+
+/* ---------- MOCK SCREENS (portal UI stays in English, like the real site) ---------- */
+const bar=u=>`<div class="mock-bar"><i></i><i></i><i></i><span>${u}</span></div>`;
+const hs=(n,inner,extra="")=>`<div class="hs ${extra}" data-p="${n}"><span class="tag">${n}</span>${inner}</div>`;
+const MOCKS={
+ home:()=>`<div class="mock">${bar("tmgm.com")}<div class="mock-body" style="background:linear-gradient(135deg,#6b97d8,#9dbdf0);color:#fff;min-height:220px">
+  <div style="display:flex;gap:14px;align-items:center;background:#fff;color:#0b1f6b;margin:-18px -18px 20px;padding:10px 16px;font-size:11px"><b style="font-size:14px">TMGM</b><span>Trading</span><span>Platform</span><span>Academy</span><span style="flex:1"></span>${hs(1,'<span style="padding:3px 10px;display:block;font-weight:600">Sign Up</span>')}<span>Portal</span>${hs(2,'<span style="display:block;padding:2px 6px">🇬🇧</span>')}</div>
+  <div style="font-family:Lexend;font-size:22px;font-weight:700;line-height:1.15;margin-bottom:14px">Power Your Potential:<br>Join 1 Million<br>Investors</div>
+  ${hs(1,'<div style="background:#fff;color:#0b1f6b;border-radius:999px;padding:7px 16px;display:inline-block;font-weight:600">Start Trading Now</div>')}</div></div>`,
+ signup:()=>`<div class="mock">${bar("tmgm.com")}<div class="mock-body"><h5>Sign Up and Get Started</h5>
+  ${hs(1,`<div class="grid2"><div class="fld">First Name*</div><div class="fld">Middle Name</div><div class="fld">Last Name*</div><div class="fld">Email</div><div class="fld">Password*</div><div class="fld">Confirm Password</div><div class="fld">Egypt ▾</div><div class="fld">🇪🇬 +20 ▾ &nbsp; Phone Number</div></div><div class="fld" style="margin-bottom:4px">Referral Code (Optional)</div>`)}
+  <div style="font-size:10px;margin:8px 0">☑ Subscribe to TMGM's newsletter for exclusive offers</div>
+  ${hs(2,'<div class="cta" style="margin:0">Get Started Now</div>')}</div></div>`,
+ portal:()=>`<div class="mock">${bar("portal.tmgm.com")}<div class="mock-body">
+  <div class="banner"><span>Start here: Complete identity verification first to proceed. (1/5 step finished)</span>${hs(1,'<span class="ob" style="display:block">Verify Now ›</span>')}</div>
+  <div style="text-align:center;margin-top:6px"><b>Open your live account in minutes</b><div style="color:#5b6692;font-size:10px">Your profile has not yet been verified.</div></div>
+  ${hs(2,`<div class="trackbar"><span class="on">Personal Info</span><span class="on">Verification</span><span>Additional Info</span><span>Account Configuration</span><span>Questionnaire</span></div>`)}
+  <div style="text-align:center">${hs(1,'<span class="btn-f" style="display:inline-block;padding:6px 22px">Open Now</span>')}</div></div></div>`,
+ verify:()=>`<div class="row"><div class="mock">${bar("portal.tmgm.com")}<div class="mock-body" style="text-align:center"><h5>Let's get you verified</h5><div class="fld" style="text-align:left;margin-bottom:8px">① Provide identity document</div>${hs(1,'<div class="cta light" style="margin:0">Start verification</div>')}</div></div>
+  <div class="mock">${bar("portal.tmgm.com")}<div class="mock-body" style="font-size:10.5px;min-height:128px">By clicking «Agree and continue»:<br>I confirm that I have read the <u style="color:#1d4ed8">Privacy Notice</u> and the <u style="color:#1d4ed8">Notification to Processing of Personal Data</u><div style="margin-top:12px">${hs(2,'<div class="cta light" style="margin:0">Agree and continue</div>')}</div></div></div></div>`,
+ upload:()=>`<div class="row"><div class="mock">${bar("portal.tmgm.com")}<div class="mock-body"><h5 style="font-size:12px">Select type and issuing country</h5><div class="fld" style="margin-bottom:8px">🇪🇬 Egypt ▾</div>${hs(1,'<div><div class="opt">Driving license</div><div class="opt sel">ID card</div><div class="opt">Residence permit</div><div class="opt">Passport</div></div>')}<div class="cta light" style="margin-top:10px">Continue</div></div></div>
+  <div class="mock">${bar("portal.tmgm.com")}<div class="mock-body"><h5 style="font-size:12px">Upload your document</h5>${hs(2,'<div><div class="upl"><i></i><div><b>Front side *</b><em>Uploaded</em></div></div><div class="upl"><i></i><div><b>Back side *</b><em>Uploaded</em></div></div></div>')}<div style="font-size:9.5px;color:#5b6692;text-align:center;margin:6px 0">JPG, PNG, HEIC or WEBP (max 50 MB)</div><div class="btn-f" style="text-align:center">Continue</div></div></div></div>`,
+ selfie:()=>`<div class="row"><div class="mock">${bar("portal.tmgm.com")}<div class="mock-body" style="text-align:center"><h5>Let's get you verified</h5><div class="fld" style="text-align:left;margin-bottom:6px">① Provide identity document <b style="color:#12a36b;background:#e3f6ee;border-radius:5px;padding:1px 6px;font-size:10px">Accepted</b></div><div class="fld" style="text-align:left;margin-bottom:8px">② Perform a liveness check</div>${hs(1,'<div class="cta light" style="margin:0">Start verification</div>')}</div></div>
+  <div class="mock">${bar("portal.tmgm.com")}<div class="mock-body" style="text-align:left"><div class="face">🙂</div><div style="text-align:center;font-weight:600;margin-bottom:6px">Get your camera ready</div><div class="chk">✔ Find a well lit place</div><div class="chk">✔ Position your face in the frame</div><div class="chk bad">✖ Remove hat, glasses, or mask</div>${hs(2,'<div class="cta light" style="margin:8px 0 0">Continue</div>')}</div></div></div>`,
+ address:()=>`<div class="mock">${bar("portal.tmgm.com")}<div class="mock-body"><div style="font-size:10px;font-weight:600;margin-bottom:4px">Born YYYY-MM-DD *</div><div class="fld filled" style="margin-bottom:12px">&nbsp;</div><h5 style="font-size:13px;margin-bottom:2px">Residential Address</h5><div style="text-align:center;font-size:9.5px;color:#5b6692;margin-bottom:8px">Please do not enter PO box or Postal Address</div>
+  ${hs(1,'<div style="display:grid;gap:6px;padding:6px"><div class="fld filled">Detailed Address *</div><div class="fld filled">City *</div><div class="fld filled">State/Province *</div></div>')}
+  <div style="font-size:10px;margin:8px 0 4px;font-weight:600">Postcode <span style="color:#9aa6cf">(Optional)</span></div><div class="fld" style="margin-bottom:10px">&nbsp;</div>${hs(2,'<div class="cta" style="margin:0">NEXT</div>')}</div></div>`,
+ config:()=>`<div class="mock">${bar("portal.tmgm.com")}<div class="mock-body"><div class="summary">${hs(4,'<div style="display:block"><b style="font-size:11px">Summary</b><div><span>Platform</span><b>MT5</b></div><div><span>Type</span><b>Edge</b></div><div><span>Currency</span><b>USD</b></div><div><span>Leverage</span><b>1:500</b></div></div>')}</div>
+  <div class="stack">
+  ${hs(1,'<div><div style="font-weight:600;font-size:10px;margin-bottom:4px">Trading Platform</div><div class="row"><div class="opt sel">MT5</div><div class="opt">MT4</div></div></div>')}
+  ${hs(2,'<div><div style="font-weight:600;font-size:10px;margin-bottom:4px">Account Type</div><div class="row"><div class="opt sel">Edge</div><div class="opt">Classic</div></div></div>')}
+  ${hs(3,'<div><div class="row"><div><div style="font-weight:600;font-size:10px;margin-bottom:4px">Account Currency</div><div class="fld">USD ▾</div></div><div><div style="font-weight:600;font-size:10px;margin-bottom:4px">Account Leverage</div><div class="fld">1:500 ▾</div></div></div></div>')}
+  </div></div></div>`,
+ password:()=>`<div class="mock">${bar("portal.tmgm.com")}<div class="mock-body">${hs(1,'<div style="padding:6px"><b style="font-size:10px">Set a trading password</b><div class="fld filled" style="margin:4px 0">&nbsp;</div></div>')}
+  <div style="margin:8px 0"><div class="chk">✔ At least 1 uppercase letter</div><div class="chk">✔ At least 1 lowercase letter</div><div class="chk">✔ At least 1 number</div><div class="chk">✔ 8–15 characters in length</div></div>
+  ${hs(2,'<div style="font-size:10px;padding:8px">☑ I/We hereby give our full and informed consent… I have read and agreed to be bound by the terms set out in the Client Agreement and the Risk Warning Notice.</div>')}
+  <div style="margin-top:10px">${hs(3,'<div class="cta" style="margin:0">NEXT</div>')}</div></div></div>`,
+ quest:()=>`<div class="row"><div class="mock">${bar("portal.tmgm.com")}<div class="mock-body"><h5 style="font-size:12px">Employment Status</h5>${hs(1,'<div><div class="opt">Employed - Full Time</div><div class="opt">Employed - Part Time</div><div class="opt">Self-Employed</div><div class="opt">Retired</div><div class="opt">Student</div><div class="opt">Unemployed</div></div>')}</div></div>
+  <div class="mock">${bar("portal.tmgm.com")}<div class="mock-body">${hs(2,'<div style="padding:6px;display:grid;gap:6px"><b style="font-size:10px;text-align:center">Gross income</b><div class="fld filled">&nbsp;</div><b style="font-size:10px;text-align:center">Net Saving</b><div class="fld filled">&nbsp;</div><b style="font-size:10px;text-align:center">Industry</b><div class="fld filled">&nbsp;</div></div>')}<div class="cta" style="margin-top:10px">SUBMIT</div></div></div></div>`,
+ done:()=>`<div class="mock">${bar("portal.tmgm.com")}<div class="mock-body congrats"><div class="gem">🎉</div><h5 style="margin-bottom:4px">Congratulations!</h5><div style="color:#5b6692;margin-bottom:14px">Verification successful!<br>Start trading globally now!</div><div class="row">${hs(2,'<div class="btn-o">Go to Dashboard</div>')}${hs(1,'<div class="btn-f">Go to Deposit</div>')}</div></div></div>`
+};
+
+/* ---------- RENDER ---------- */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let lang="en"; const done=new Set();
+try{ (JSON.parse(localStorage.getItem("tmgm_done")||"[]")).forEach(n=>done.add(n)); }catch(e){}
+const save=()=>{try{localStorage.setItem("tmgm_done",JSON.stringify([...done]))}catch(e){}};
+const nf=n=>lang==="ar"?String(n).replace(/\d/g,d=>"٠١٢٣٤٥٦٧٨٩"[d]):String(n);
+const stageRange=i=>{const ids=STEPS.filter(s=>s.stage===i).map(s=>s.id);return ids.length>1?`${nf(ids[0])} – ${nf(ids[ids.length-1])}`:nf(ids[0]);};
+
+function render(){
+  const L=T[lang];
+  document.documentElement.lang=lang; document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+  document.title=lang==="ar"?"TMGM · مسار فتح الحساب":"TMGM · Account Opening Flow";
+  $("#btn-en").setAttribute("aria-pressed",lang==="en"); $("#btn-ar").setAttribute("aria-pressed",lang==="ar");
+  $$("[data-t]").forEach(el=>{const v=L[el.dataset.t]; if(v!==undefined) el.innerHTML=v;});
+  $("#ready").innerHTML=L.ready.map(x=>`<li>${x}</li>`).join("");
+  $("#tips").innerHTML=L.tips.map((t,i)=>`<div class="tip-card"><div class="n">${nf(i+1)}</div><h3>${t[0]}</h3><p>${t[1]}</p></div>`).join("");
+
+  $("#stages").innerHTML=L.stagesList.map((s,i)=>`<a class="stage-card" href="#stage-${i+1}"><div class="n">${nf(i+1)}</div><h3>${s[0]}</h3><p>${s[1]}</p><span class="rng">${stageRange(i)>"" && (STEPS.filter(x=>x.stage===i).length>1?L.stepsWord:L.stepWord)} ${stageRange(i)}</span></a>`).join("");
+
+  $("#rail").innerHTML=`<h4>${lang==="ar"?"الخطوات":"Steps"}</h4>`+L.stagesList.map((s,i)=>`<div class="stage-group"><div class="stage-label"><b>${nf(i+1)}</b>${s[0]}</div>${STEPS.filter(x=>x.stage===i).map(x=>`<a class="step-link ${done.has(x.id)?"done":""}" href="#step-${x.id}" data-id="${x.id}"><span class="num">${nf(x.id)}</span>${x.t[lang]}</a>`).join("")}</div>`).join("");
+
+  let html="",cur=-1;
+  STEPS.forEach(s=>{
+    if(s.stage!==cur){cur=s.stage;html+=`<div class="stage-head" id="stage-${cur+1}"><div class="n">${nf(cur+1)}</div><h2>${L.stagesList[cur][0]}</h2><div class="line"></div></div>`;}
+    const isDone=done.has(s.id);
+    html+=`<article class="step" id="step-${s.id}" data-id="${s.id}">
+      <div class="step-top"><div class="badge"><small>${L.step}</small><b>${nf(s.id)}</b></div><h3>${s.t[lang]}</h3>
+      <button class="done-btn" aria-pressed="${isDone}" data-done="${s.id}">${isDone?"✓ "+L.marked:"○ "+L.mark}</button></div>
+      <div class="step-body"><div><ul class="points">${s.pts.map((p,i)=>`<li data-p="${i+1}"><span class="dot">${nf(i+1)}</span><span>${p[lang]}</span></li>`).join("")}</ul>
+      ${s.note?`<div class="note ${s.note.k}">${s.note[lang]}</div>`:""}</div>
+      <div class="mockwrap">${MOCKS[s.mock]()}</div></div></article>`;
+  });
+  $("#flow").innerHTML=html;
+  // Arabic numerals inside hotspot tags
+  if(lang==="ar") $$(".hs>.tag").forEach(t=>t.textContent=nf(t.textContent));
+  bindStep(); updateProgress(); spy();
+}
+
+function bindStep(){
+  $$(".step").forEach(card=>{
+    const hl=(p,on)=>{card.querySelectorAll(`[data-p="${p}"]`).forEach(e=>e.classList.toggle("hl",on));};
+    card.querySelectorAll(".points li").forEach(li=>{
+      li.addEventListener("mouseenter",()=>hl(li.dataset.p,true));
+      li.addEventListener("mouseleave",()=>hl(li.dataset.p,false));
+    });
+    card.querySelectorAll(".hs").forEach(h=>{
+      h.addEventListener("mouseenter",()=>hl(h.dataset.p,true));
+      h.addEventListener("mouseleave",()=>hl(h.dataset.p,false));
+    });
+  });
+  $$("[data-done]").forEach(b=>b.addEventListener("click",()=>{
+    const id=+b.dataset.done; done.has(id)?done.delete(id):done.add(id); save(); render();
+    const el=document.getElementById("step-"+id); if(el) el.scrollIntoView({block:"center"});
+  }));
+}
+function updateProgress(){
+  $("#bar").style.width=(done.size/STEPS.length*100)+"%";
+}
+function spy(){
+  const links=$$(".step-link");
+  const io=new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){ links.forEach(l=>l.classList.toggle("active",l.dataset.id===e.target.dataset.id)); } });
+  },{rootMargin:"-30% 0px -60% 0px"});
+  $$(".step").forEach(s=>io.observe(s));
+}
+
+/* ---------- LANGUAGE + DEEP LINKS ----------
+   #en / #ar               → language
+   #step-4-ar, #stage-2-en → jump to step/stage in that language                       */
+function parseHash(){
+  const h=location.hash.replace("#","");
+  const m=h.match(/^(?:(step|stage)-(\d+))?-?(en|ar)?$/);
+  let l=null,target=null;
+  if(m){ l=m[3]||null; if(m[1]) target=`${m[1]}-${m[2]}`; }
+  return {l,target};
+}
+function setLang(l,{updateHash=true}={}){
+  lang=l; render();
+  try{localStorage.setItem("tmgm_lang",l)}catch(e){}
+  if(updateHash){const {target}=parseHash(); history.replaceState(null,"",`#${target?target+"-":""}${l}`);}
+}
+$("#btn-en").onclick=()=>setLang("en");
+$("#btn-ar").onclick=()=>setLang("ar");
+$("#theme").onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==="dark"?"light":"dark";try{localStorage.setItem("tmgm_theme",r.dataset.theme)}catch(e){}};
+function go(target){
+  if(!target) return; const el=document.getElementById(target); if(!el) return;
+  el.scrollIntoView({behavior:"smooth",block:"start"});
+  if(target.startsWith("step")){el.classList.add("focus");setTimeout(()=>el.classList.remove("focus"),2200);}
+}
+window.addEventListener("hashchange",()=>{
+  const {l,target}=parseHash();
+  if(l&&l!==lang){lang=l;render();}
+  go(target);
+});
+document.addEventListener("click",e=>{
+  const a=e.target.closest('a[href^="#"]'); if(!a) return;
+  const id=a.getAttribute("href").slice(1); if(!id||/-(en|ar)$/.test(id)) return;
+  e.preventDefault(); history.replaceState(null,"",`#${id}-${lang}`); go(id);
+});
+
+/* init */
+(function(){
+  let th=null; try{th=localStorage.getItem("tmgm_theme")}catch(e){}
+  if(!th&&matchMedia("(prefers-color-scheme: dark)").matches) th="dark";
+  if(th) document.documentElement.dataset.theme=th;
+  const {l,target}=parseHash();
+  let saved=null; try{saved=localStorage.getItem("tmgm_lang")}catch(e){}
+  lang=l||saved||((navigator.language||"").startsWith("ar")?"ar":"en");
+  render();
+  if(target) setTimeout(()=>go(target),250);
+})();
+</script>
+</body>
+</html>
